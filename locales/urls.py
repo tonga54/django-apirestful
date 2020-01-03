@@ -1,5 +1,5 @@
 from django.urls import path
-from servicios import views
+from locales import views
 
 urlpatterns = [
     path('', views.show_list, name="Page")

@@ -5,8 +5,13 @@ from servicios.models import Servicio
 # from locales.models import Local
 # from atenciones.models import AtencionClienteEmpleadoLocal, AtencionClienteTrabajador
 
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
 class Usuario(AbstractUser):
-    pass
+    email = models.EmailField(max_length=254, unique=True, blank=False, null=False)
     nombre = models.CharField(max_length=64, verbose_name="Nombre")
     apellido = models.CharField(max_length=64, verbose_name="Apellido")
     fotoPerfil = models.ImageField(verbose_name="Foto perfil", upload_to="fotos_perfil_usuario", null=True, blank=True)
@@ -163,3 +168,10 @@ class Valoracion(models.Model):
     
     def __str__(self):
         return self.descripcion
+
+
+
+@receiver(post_save, sender = settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
