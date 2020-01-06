@@ -16,7 +16,7 @@ def show_list(request):
     elif (request.method == "POST"):
         serializerLocal = LocalSerializer(data=request.data)
         if(serializerLocal.is_valid()):
-            local = serializerLocal.create()
+            local = serializerLocal.create(request.data)
             return Response(serializerLocal.data, status = status.HTTP_201_CREATED)
 
         return Response(serializerLocal.errors, status = status.HTTP_400_BAD_REQUEST)
