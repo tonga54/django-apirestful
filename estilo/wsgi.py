@@ -1,5 +1,5 @@
 """
-WSGI config for Barberos project.
+WSGI config for estilo project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Barberos.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'estilo.settings')
 
 application = get_wsgi_application()
