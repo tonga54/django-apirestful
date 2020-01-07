@@ -16,6 +16,6 @@ class LocalSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         localizacionData = validated_data.pop('localizacion')
-        local = Local.objects.create(**validated_data)
-        LocalizacionLocal.objects.create(local=local, **localizacionData)
+        localizacion = LocalizacionLocal.objects.create(**localizacionData)
+        local = Local.objects.create(localizacion = localizacion, **validated_data)
         return local

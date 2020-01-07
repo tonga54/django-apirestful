@@ -1,26 +1,34 @@
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.contrib.auth import authenticate
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
-from rest_framework.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND,
-    HTTP_200_OK
-)
+# MODELO LOGIN PERSONALIZADO
+from usuarios.backends import EmailBackend
 
 # SERIALIZADORES
 from usuarios.serializers import RegistrationSerializer
 
-# LOGIN PERSONALIZADO
-from usuarios.backends import EmailBackend
+# RENDER DE DJANGO
+from django.shortcuts import render
+
+# APPS DE RESTFRAMEWORK
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import AllowAny
+
+# AUTENTICACION
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+
+# DECORADORES
+from rest_framework.decorators import authentication_classes
+from rest_framework.decorators import permission_classes
+from rest_framework.decorators import api_view
 
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes((AllowAny,))
-def registration_view(request):
+def registration(request):
     if request.method == 'POST':
         serializer = RegistrationSerializer(data=request.data)
         data = {}
@@ -28,14 +36,15 @@ def registration_view(request):
             usuario = serializer.save()
             token, _ = Token.objects.get_or_create(user=usuario)
             data = {"token": token.key}
+            return Response(data, status = status.HTTP_201_CREATED)
         else:
-            data = serializer.errors
-        return Response(data)
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes((AllowAny,))
-def login_view(request):
+def login(request):
     email = request.data.get("email")
     password = request.data.get("password")
     if email is None or password is None:

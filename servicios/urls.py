@@ -2,6 +2,6 @@ from django.urls import path
 from servicios import views
 
 urlpatterns = [
-    path('', views.getServicios, name="Ver servicios"),
-    path('create', views.createServicios, name="Crear servicios")
+    path('', views.show_list, name="Ver servicios"),
+    path('create', views.create, name="Crear servicios")
 ]
