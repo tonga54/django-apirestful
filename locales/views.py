@@ -1,8 +1,8 @@
-# CLASES DEL MODELO
-from locales.models import Local, LocalizacionLocal
-
 # SERIALIZADORES
 from locales.serializer import LocalSerializer
+
+# VIEWSET
+from locales.viewsets import *
 
 # RENDER DE DJANGO
 from django.shortcuts import render
@@ -23,26 +23,53 @@ from rest_framework.decorators import permission_classes
 from rest_framework.decorators import api_view
 
 @api_view(['GET'])
-def show_list(request):
+def list(request):
     if (request.method == "GET"):
-        data = Local.objects.all()
-        serializerLocal = LocalSerializer(data, many = True)
-        return Response(serializerLocal.data)
+        viewset = LocalViewSet()
+        return viewset.list()
     return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create(request):
     if (request.method == "POST"):
-        serializerLocal = LocalSerializer(data=request.data)
-        if(serializerLocal.is_valid()):
-            local = serializerLocal.create(request.data)
-            return Response(serializerLocal.data, status = status.HTTP_201_CREATED)
-        else:
-            return Response(serializerLocal.errors, status = status.HTTP_400_BAD_REQUEST)
+        viewset = LocalViewSet()
+        return viewset.create(request)
     return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
-    
 
-        
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def retrieve(request, pk):
+    if (request.method == "POST"):
+        viewset = LocalViewSet()
+        return viewset.retrieve(request, pk)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def update(request, pk):
+    if (request.method == "PUT"):
+        viewset = LocalViewSet()
+        return viewset.update(request, pk)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['PATCH'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def partial_update(request, pk):
+    if (request.method == "PATCH"):
+        viewset = LocalViewSet()
+        return viewset.partial_update(request, pk)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def destroy(request, pk):
+    if (request.method == "DELETE"):
+        viewset = LocalViewSet()
+        return viewset.destroy(request, pk)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)

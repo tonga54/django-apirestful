@@ -27,8 +27,7 @@ class Local(models.Model):
     rut = models.BigIntegerField(verbose_name="Rut")
     localizacion = models.OneToOneField(
         LocalizacionLocal, 
-        on_delete=models.CASCADE, 
-        primary_key=True, 
+        on_delete=models.CASCADE,
         related_name="Localizacion")
     descripcion = models.TextField(verbose_name="Descripcion")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creacion")

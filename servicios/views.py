@@ -27,7 +27,7 @@ def show_list(request):
     if (request.method == "GET"):
         data = Servicio.objects.all()
         serializer = ServicioSerializer(data, many = True)
-        return Response(serializer.data)
+        return Response(serializer.data, status = status.HTTP_200_OK)
     return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
@@ -41,4 +41,33 @@ def create(request):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def update(request, pk):
+    if (request.method == "PUT"):
+        serializer = ServicioSerializer(data=request.data)
+        if(serializer.is_valid()):
+            result = serializer.update(request.data, pk)
+            if result is not None:
+                return Response(serializer.data, status = status.HTTP_201_CREATED)
+            else:
+                return Response({"result":"No existe el servicio."}, status = status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def destroy(request, pk):
+    if (request.method == "DELETE"):
+        serializer = ServicioSerializer()
+        result = serializer.destroy(pk)
+        if result is not None:
+            return Response(result, status = status.HTTP_200_OK)
+        else:
+            return Response({"result":"No existe el servicio."}, status = status.HTTP_204_NO_CONTENT)
     return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
