@@ -68,7 +68,6 @@ class LocalTrabajador(models.Model):
     trabajador = models.OneToOneField(
         Trabajador,
         on_delete=models.CASCADE,
-        primary_key=True,
         related_name="Trabajador"
     )
     serviciosQuePuedeRealizar = models.ManyToManyField(Servicio, through='LocalTrabajadorServicio', related_name="LocalTrabajador")

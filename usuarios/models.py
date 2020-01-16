@@ -12,8 +12,8 @@ from rest_framework.authtoken.models import Token
 
 class Usuario(AbstractUser):
     email = models.EmailField(max_length=254, unique=True, blank=False, null=False)
-    nombre = models.CharField(max_length=64, verbose_name="Nombre")
-    apellido = models.CharField(max_length=64, verbose_name="Apellido")
+    # nombre = models.CharField(max_length=64, verbose_name="Nombre")
+    # apellido = models.CharField(max_length=64, verbose_name="Apellido")
     fotoPerfil = models.ImageField(verbose_name="Foto perfil", upload_to="fotos_perfil_usuario", null=True, blank=True)
     telefono = models.CharField(max_length=8, verbose_name="Telefono")
 
@@ -25,7 +25,6 @@ class Trabajador(models.Model):
     usuario = models.OneToOneField(
         Usuario,
         on_delete=models.CASCADE,
-        primary_key=True,
         related_name="trabajador_usuario"
     )
     created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creacion")
@@ -45,7 +44,6 @@ class Cliente(models.Model):
     usuario = models.OneToOneField(
         Usuario,
         on_delete=models.CASCADE,
-        primary_key=True,
         related_name="trabajador_cliente"
     )
     atencionClienteTrabajador = models.ManyToManyField(Trabajador, through='AtencionClienteTrabajador', related_name="atencion_cliente_trabajador")

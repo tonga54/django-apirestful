@@ -1,8 +1,5 @@
-# MODELO LOGIN PERSONALIZADO
-from usuarios.backends import EmailBackend
-
 # SERIALIZADORES
-from usuarios.serializers import RegistrationSerializer
+from usuarios.viewsets import UsuarioViewSet
 
 # RENDER DE DJANGO
 from django.shortcuts import render
@@ -28,29 +25,17 @@ from rest_framework.decorators import api_view
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes((AllowAny,))
-def registration(request):
+def create(request):
     if request.method == 'POST':
-        serializer = RegistrationSerializer(data=request.data)
-        data = {}
-        if serializer.is_valid():
-            usuario = serializer.save()
-            token, _ = Token.objects.get_or_create(user=usuario)
-            data = {"token": token.key}
-            return Response(data, status = status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        viewset = UsuarioViewSet()
+        return viewset.create(request)
     return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes((AllowAny,))
 def login(request):
-    email = request.data.get("email")
-    password = request.data.get("password")
-    if email is None or password is None:
-        return Response({'error': 'Por favor provenga de email y password.'}, status=status.HTTP_400_BAD_REQUEST)
-    user = EmailBackend().authenticate(username = email, password = password)
-    if not user:
-        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_404_NOT_FOUND)
-    token, _ = Token.objects.get_or_create(user=user)
-    return Response({'token': token.key, 'user' : user.email}, status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        viewset = UsuarioViewSet()
+        return viewset.login(request)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
