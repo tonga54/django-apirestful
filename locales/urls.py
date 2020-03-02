@@ -11,5 +11,6 @@ urlpatterns = [
     # path('asignarServicio', views.asignar_servicio, name="Asignar servicio a local"),
     path('asignarTrabajadorLocal', views.asignar_trabajador_local, name="Asignar trabajador a local"),
     path('eliminarTrabajadorLocal', views.eliminar_trabajador_local, name="Eliminar trabajador a local"),
-    path('asignarServiciosTrabajadorLocal', views.asignar_servicios_trabajador_local, name="Asignar servicios a trabajador local")
+    path('asignarServiciosTrabajadorLocal', views.asignar_servicios_trabajador_local, name="Asignar servicios a trabajador local"),
+    path('modificarServicioTrabajadorLocal', views.modificar_servicio_trabajador_local, name="Asignar servicios a trabajador local")
 ]

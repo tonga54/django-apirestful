@@ -50,13 +50,3 @@ class LocalTrabajadorServicioSerializer(serializers.ModelSerializer):
         fields = ['local_trabajador_id', 'serviciosVM']
 
 
-class LocalTrabajadorUnServicioSerializer(serializers.ModelSerializer):
-    local_trabajador_id = serializers.IntegerField(required=True)
-    servicioVM = LocalTrabajadorServicio_CustomSerializer(required=True)
-
-    class Meta:
-        model = LocalTrabajadorServicio
-        fields = ['local_trabajador_id', 'servicioVM']
-
-
-

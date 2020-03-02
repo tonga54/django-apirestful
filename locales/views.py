@@ -104,3 +104,13 @@ def asignar_servicios_trabajador_local(request):
         viewset = TrabajadorLocalViewSet()
         return viewset.asignar_servicios_trabajador_local(request)
     return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def modificar_servicio_trabajador_local(request):
+    if (request.method == "PUT"):
+        viewset = TrabajadorLocalViewSet()
+        return viewset.asignar_servicios_trabajador_local(request)
+    return Response(status = status.HTTP_405_METHOD_NOT_ALLOWED)

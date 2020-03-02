@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # SERIALIZER
-from locales.serializer import LocalSerializer, LocalizacionSerializer, TrabajadorLocalSerializer, LocalTrabajadorServicioSerializer, EliminarTrabajadorLocalSerializer, LocalTrabajadorUnServicioSerializer
+from locales.serializer import LocalSerializer, LocalizacionSerializer, TrabajadorLocalSerializer, LocalTrabajadorServicioSerializer, EliminarTrabajadorLocalSerializer
 
 class LocalViewSet(viewsets.ViewSet):
 
@@ -163,26 +163,6 @@ class TrabajadorLocalViewSet(viewsets.ViewSet):
                                 duracion = serv['duracion']
                             )
                         obj.save()
-
-                return Response({"result":"Servicios asociados al trabajador con exito."}, status = status.HTTP_201_CREATED)
-
-            except LocalTrabajador.DoesNotExist:
-                return Response({"result":"No existe un usuario asociado a el local."}, status = status.HTTP_204_NO_CONTENT)
-            except Servicio.DoesNotExist:
-                return Response({"result":"No existe el servicio."}, status = status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(serializer.errors)
-
-    def modificar_servicio_trabajador_local(self, request):
-        serializer = LocalTrabajadorUnServicioSerializer(data = request.data)
-        if(serializer.is_valid()):
-            try:
-                local_trabajador = LocalTrabajador.objects.get(id=request.data['local_trabajador_id'])
-                servicioObject = {
-                    "servicio": Servicio.objects.get(id = request.data['servicioVM']['servicio']),
-                    "precio": request.data['servicioVM']['precio'],
-                    "duracion" : request.data['servicioVM']['duracion']
-                }
 
                 return Response({"result":"Servicios asociados al trabajador con exito."}, status = status.HTTP_201_CREATED)
 
